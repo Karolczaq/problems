@@ -48,7 +48,7 @@ defmodule ProblemsWeb.Layouts do
             <.link navigate={~p"/problems"} class="btn btn-ghost">Problems</.link>
           </li>
           <li>
-            <.link navigate={~p"/sets"} class="btn btn-ghost">Sets</.link>
+            <%!-- <.link navigate={~p"/sets"} class="btn btn-ghost">Sets</.link> --%>
           </li>
           <li>
             <.theme_toggle />

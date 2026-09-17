@@ -17,7 +17,6 @@ defmodule ProblemsWeb.Router do
   scope "/", ProblemsWeb do
     pipe_through :browser
 
-    live "/", ProblemLive.Index, :index
     live "/problems", ProblemLive.Index, :index
   end
 
