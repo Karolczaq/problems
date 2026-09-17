@@ -17,7 +17,8 @@ defmodule ProblemsWeb.Router do
   scope "/", ProblemsWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", ProblemLive.Index, :index
+    live "/problems", ProblemLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
