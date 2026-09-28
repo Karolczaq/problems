@@ -2,11 +2,36 @@ defmodule ProblemsWeb.ProblemLiveTest do
   use ProblemsWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
+  import Problems.ProblemsFixtures
 
   @marker %{
     "szufladkowa-51-liczb" => "z zasady szufladkowej",
     "oo-czy-or" => "zniszczyć sama siebie"
   }
+
+  setup do
+    problems = [
+      problem_fixture(%{
+        slug: "szufladkowa-51-liczb",
+        body_md: "Wybieramy 51 liczb ze zbioru od 1 do 100.",
+        solution_md: "Dwie liczby mają tę samą część nieparzystą z zasady szufladkowej."
+      }),
+      problem_fixture(%{
+        slug: "przewracajacy-sie-pret",
+        subject: "physics",
+        body_md: "Pręt o długości L przewraca się bez poślizgu.",
+        solution_md: "Energia potencjalna środka masy przechodzi w energię obrotu."
+      }),
+      problem_fixture(%{
+        slug: "oo-czy-or",
+        subject: "quant",
+        body_md: "Ile rzutów monetą średnio czekamy na dwa orły pod rząd?",
+        solution_md: "Sekwencja OO może zniszczyć sama siebie, dlatego czekamy dłużej."
+      })
+    ]
+
+    %{problems: problems}
+  end
 
   defp toggle(view, slug) do
     view
@@ -14,12 +39,12 @@ defmodule ProblemsWeb.ProblemLiveTest do
     |> render_click()
   end
 
-  test "lists all problems", %{conn: conn} do
+  test "lists all problems", %{conn: conn, problems: problems} do
     {:ok, _view, html} = live(conn, ~p"/problems")
 
-    for problem <- Problems.Fixtures.list_problems() do
+    for problem <- problems do
       assert html =~ problem.title
-      assert html =~ problem.body
+      assert html =~ problem.body_md
     end
   end
 

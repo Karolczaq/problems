@@ -1,11 +1,9 @@
 defmodule ProblemsWeb.ProblemLive.Index do
   use ProblemsWeb, :live_view
 
-  alias Problems.Fixtures
-
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, problems: Fixtures.list_problems(), expanded: MapSet.new())}
+    {:ok, assign(socket, problems: Problems.list_problems(), expanded: MapSet.new())}
   end
 
   @impl true
@@ -22,7 +20,7 @@ defmodule ProblemsWeb.ProblemLive.Index do
     """
   end
 
-  attr :problem, :map, required: true
+  attr :problem, Problems.Problem, required: true
   attr :expanded?, :boolean, default: false
 
   def problem_card(assigns) do
@@ -34,9 +32,9 @@ defmodule ProblemsWeb.ProblemLive.Index do
           <span class="badge badge-outline">{@problem.subject}</span>
           <span class="badge badge-outline">Difficulty: {@problem.difficulty}</span>
           <span class="text-base-content/60">{@problem.source}</span>
-          <span class="text-base-content/60">{Enum.join(@problem.topics, ", ")}</span>
+          <span class="text-base-content/60">{Enum.join(topics(@problem), ", ")}</span>
         </div>
-        <p class="whitespace-pre-line">{@problem.body}</p>
+        <p class="whitespace-pre-line">{@problem.body_md}</p>
         <div class="card-actions">
           <button
             type="button"
@@ -53,14 +51,18 @@ defmodule ProblemsWeb.ProblemLive.Index do
         </div>
         <%= if @expanded? do %>
           <div class="rounded-box bg-base-200 p-4 space-y-2 text-sm">
-            <p><span class="font-semibold">Hint:</span> {@problem.hint}</p>
-            <p><span class="font-semibold">Solution:</span> {@problem.solution}</p>
+            <p :if={@problem.hint_md}><span class="font-semibold">Hint:</span> {@problem.hint_md}</p>
+            <p :if={@problem.solution_md}>
+              <span class="font-semibold">Solution:</span> {@problem.solution_md}
+            </p>
           </div>
         <% end %>
       </div>
     </div>
     """
   end
+
+  defp topics(problem), do: for(%{kind: :topic, slug: slug} <- problem.tags, do: slug)
 
   @impl true
   def handle_event("toggle_solution", %{"slug" => slug}, socket) do
