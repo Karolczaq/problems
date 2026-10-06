@@ -9,7 +9,8 @@ import Config
 
 config :problems,
   ecto_repos: [Problems.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  content_dir: "content"
 
 # Configure the endpoint
 config :problems, ProblemsWeb.Endpoint,

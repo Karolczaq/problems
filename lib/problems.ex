@@ -68,6 +68,27 @@ defmodule Problems do
   end
 
   @doc """
+  Returns `%{slug => content_hash}` for every stored problem, so the importer can
+  tell new, changed and unchanged files apart without loading bodies.
+  """
+  def content_hashes do
+    Repo.all(from p in Problem, select: {p.slug, p.content_hash}) |> Map.new()
+  end
+
+  @doc """
+  Deletes problems by slug, then every tag no problem uses any more (ADR-11).
+  Returns the number of deleted problems.
+  """
+  def delete_problems_and_unused_tags(slugs) do
+    {deleted, _} = Repo.delete_all(from p in Problem, where: p.slug in ^slugs)
+
+    used_tag_ids = from pt in "problems_tags", select: pt.tag_id
+    Repo.delete_all(from t in Tag, where: t.id not in subquery(used_tag_ids))
+
+    deleted
+  end
+
+  @doc """
   Fetches a problem with its tags. Raises `Ecto.NoResultsError` when missing.
   """
   def get_problem_by_slug!(slug) do
@@ -126,8 +147,6 @@ defmodule Problems do
     end)
   end
 
-  # `%` and `_` are LIKE wildcards and `\` is its escape character;
-  # a user typing "50%" means the literal text.
   defp escape_like(word), do: String.replace(word, ["\\", "%", "_"], &("\\" <> &1))
 
   defp tags_query, do: from(t in Tag, order_by: [t.kind, t.slug])

@@ -72,7 +72,9 @@ defmodule Problems.MixProject do
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:yaml_elixir, "~> 2.12"},
+      {:mdex, "~> 0.14.0"}
     ]
   end
 
@@ -85,7 +87,7 @@ defmodule Problems.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],

@@ -20,6 +20,10 @@ if System.get_env("PHX_SERVER") do
   config :problems, ProblemsWeb.Endpoint, server: true
 end
 
+if content_dir = System.get_env("CONTENT_DIR") do
+  config :problems, content_dir: content_dir
+end
+
 config :problems, ProblemsWeb.Endpoint,
   http: [port: String.to_integer(System.get_env("PORT", "4000"))]
 

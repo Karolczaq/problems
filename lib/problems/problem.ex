@@ -8,9 +8,6 @@ defmodule Problems.Problem do
   use Ecto.Schema
   import Ecto.Changeset
 
-  # Slug, subject and tag slugs all end up in paths and URLs (`<content_dir>/<subject>/<slug>.md`,
-  # `?subject=`, `?topics=`), so they share one URL-safe format. The sets themselves are open:
-  # subjects and tags are data chosen by the author, not a closed list in code.
   @slug_format ~r/^[a-z0-9]+(-[a-z0-9]+)*$/
 
   def validate_slug_format(changeset, field) do
