@@ -27,7 +27,6 @@ defmodule Problems.Problem do
     field :body_md, :string
     field :hint_md, :string
     field :solution_md, :string
-    field :body_html, :string
     field :search_text, :string
     field :origin_path, :string
     field :content_hash, :string
@@ -47,7 +46,7 @@ defmodule Problems.Problem do
     :origin_path,
     :content_hash
   ]
-  @optional [:source, :year, :answer, :hint_md, :solution_md, :body_html]
+  @optional [:source, :year, :answer, :hint_md, :solution_md]
 
   def changeset(problem, attrs) do
     problem

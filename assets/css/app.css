@@ -3,6 +3,7 @@
 
 @import "tailwindcss" source(none);
 @import "phoenix-colocated/problems/colocated.css";
+@import "../vendor/katex/katex.css";
 @source "../css";
 @source "../js";
 @source "../../lib/problems_web";

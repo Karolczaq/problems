@@ -61,7 +61,7 @@ defmodule Problems.Search do
 
   defp markdown_text(markdown) do
     markdown
-    |> MDEx.parse_document!(extension: [math_dollars: true, table: true])
+    |> MDEx.parse_document!(extension: Problems.Markdown.extension())
     |> Enum.flat_map(fn
       %MDEx.Math{literal: latex} -> [strip_tex(latex)]
       %MDEx.CodeBlock{info: "math", literal: latex} -> [strip_tex(latex)]
